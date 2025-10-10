@@ -1,5 +1,6 @@
 import cloudinary from 'cloudinary';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import * as dotenv from 'dotenv';
 import express from 'express';
 import 'express-async-errors';
@@ -17,7 +18,7 @@ import jobRouter from './routes/jobRouter.js';
 import userRouter from './routes/userRouter.js';
 
 // public
-import path, { dirname } from 'path';
+import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 // middleware
@@ -34,11 +35,18 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
-app.use(express.static(path.resolve(__dirname, './client/dist')));
+// app.use(express.static(path.resolve(__dirname, './client/dist')));
 app.use(cookieParser());
 app.use(express.json());
 app.use(helmet());
 app.use(mongoSanitize());
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000', // Replace with your Next.js frontend origin
+    credentials: true, // If you're sending cookies or authorization headers
+  })
+);
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -53,7 +61,7 @@ app.use('/api/v1/users', authenticateUser, userRouter);
 app.use('/api/v1/auth', authRouter);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './client/dist', 'index.html'));
+  // res.sendFile(path.resolve(__dirname, './client/dist', 'index.html'));
 });
 
 app.use('*', (req, res) => {

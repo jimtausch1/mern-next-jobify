@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import ToastProvider from '../components/ToastProvider';
 import './globals.css';
 import StyledComponentsRegistry from './registry';
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <ToastProvider>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </ToastProvider>
       </body>
     </html>
   );
