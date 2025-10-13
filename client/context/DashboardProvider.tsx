@@ -1,10 +1,10 @@
 'use client';
 
 import { type QueryClient } from '@tanstack/react-query';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import LogoutAction from '../actions/LogoutAction';
 import { checkDefaultTheme } from '../utils/checkTheme';
 import { customFetch } from '../utils/customFetch';
 import { DashboardContext } from './DashboardContext';
@@ -35,7 +35,7 @@ export default function DashboardProvider({ children, queryClient }: DashboardPr
   };
 
   const logoutUser = useCallback(async () => {
-    await LogoutAction();
+    await signOut();
     router.push('/');
     // queryClient.invalidateQueries();
     toast.success('Logging out...');

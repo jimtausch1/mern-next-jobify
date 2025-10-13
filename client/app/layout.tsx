@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
 import ToastProvider from '../components/ToastProvider';
 import { ReactQueryClientProvider } from '../context/ReactQueryClientProvider';
@@ -20,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ReactQueryClientProvider>
-          <ToastProvider>
-            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-          </ToastProvider>
-        </ReactQueryClientProvider>
+        <SessionProvider>
+          <ReactQueryClientProvider>
+            <ToastProvider>
+              <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            </ToastProvider>
+          </ReactQueryClientProvider>
+        </SessionProvider>
       </body>
     </html>
   );
