@@ -1,5 +1,9 @@
+'use client';
+
 export const checkDefaultTheme = () => {
-  const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
-  document.body.classList.toggle('dark-theme', isDarkTheme);
-  return isDarkTheme;
+  if (typeof window !== 'undefined') {
+    const isDarkTheme = window?.localStorage?.getItem('darkTheme') === 'true';
+    document.body.classList.toggle('dark-theme', isDarkTheme);
+    return isDarkTheme;
+  }
 };

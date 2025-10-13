@@ -19,8 +19,7 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const user = await User.findOne({ email: req.body.email });
 
-  const isValidUser =
-    user && (await comparePassword(req.body.password, user.password || ''));
+  const isValidUser = user && (await comparePassword(req.body.password, user.password || ''));
 
   if (!isValidUser) throw new UnauthenticatedError('invalid credentials');
 
@@ -33,7 +32,7 @@ export const login = async (req: Request, res: Response) => {
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === 'production',
   });
-  res.status(StatusCodes.OK).json({ msg: 'user logged in' });
+  res.status(StatusCodes.OK).json({ msg: 'user logged in', token: token });
 };
 
 export const logout = (req: Request, res: Response) => {

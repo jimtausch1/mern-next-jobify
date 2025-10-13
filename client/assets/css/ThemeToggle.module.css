@@ -1,8 +1,4 @@
-'use client';
-
-import styled from 'styled-components';
-
-const Wrapper = styled.button`
+.theme-toggle {
   background: transparent;
   border-color: transparent;
   width: 3.5rem;
@@ -14,5 +10,4 @@ const Wrapper = styled.button`
     font-size: 1.15rem;
     color: var(--text-color);
   }
-`;
-export default Wrapper;
+}

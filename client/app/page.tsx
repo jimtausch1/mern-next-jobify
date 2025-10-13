@@ -1,16 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import styles from '../assets/css/LandingPage.module.css';
 import main from '../assets/main.svg';
-import Wrapper from '../assets/wrappers/LandingPage';
 import Logo from '../components/Logo';
 
 export default function Home() {
   return (
-    <Wrapper>
+    <section className={styles.section}>
       <nav>
         <Logo />
       </nav>
-      <div className="container page">
+      <div className={`container ${styles.page}`}>
         <div className="info">
           <h1>
             job <span>tracking</span> app
@@ -20,15 +20,15 @@ export default function Home() {
             coffee chia. Aesthetic post-ironic venmo, quinoa lo-fi tote bag adaptogen everyday carry
             meggings +1 brunch narwhal.
           </p>
-          <Link href="/register" className="btn register-link">
+          <Link href="/register" className={`btn ${styles.btn} ${styles['register-link']}`}>
             Register
           </Link>
-          <Link href="/login" className="btn ">
+          <Link href="/login" className={`btn ${styles.btn}`}>
             Login / Demo User
           </Link>
         </div>
-        <Image src={main} alt="job hunt" className="img main-img" />
+        <Image src={main} alt="job hunt" className={`img ${styles['main-img']}`} />
       </div>
-    </Wrapper>
+    </section>
   );
 }

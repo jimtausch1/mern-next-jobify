@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 // import { authConfig } from './auth.config';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  debug: true,
   pages: {
     signIn: '/login',
     error: '/login',
@@ -15,36 +16,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
+      name: 'Credentials',
       credentials: {
-        email: { type: 'email' },
-        password: { type: 'password' },
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
-        if (credentials == null) return null;
-
-        // // Find user in database
-        // const user = await prisma.user.findFirst({
-        //   where: {
-        //     email: credentials.email as string,
-        //   },
-        // });
-
-        // // Check if user exists and if the password matches
-        // if (user && user.password) {
-        //   const isMatch = await compareSync(credentials.password as string, user.password);
-
-        //   // If password is correct, return user
-        //   if (isMatch) {
-        //     return {
-        //       id: user.id,
-        //       name: user.name,
-        //       email: user.email,
-        //       role: user.role,
-        //     };
-        //   }
-        // }
-        // If user does not exist or password does not match return null
-        return null;
+      async authorize(credentials, req) {
+        const { username, password } = credentials as { username: string; password: string };
+        const res = await fetch('http://localhost:3000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+        const user = await res.json();
+        if (res.ok) {
+          return user;
+        } else {
+          return null;
+        }
       },
     }),
   ],

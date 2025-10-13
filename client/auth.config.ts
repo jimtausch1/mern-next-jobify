@@ -1,10 +1,9 @@
 import { NextAuthConfig } from 'next-auth';
-import { NextResponse } from 'next/server';
 
 export const authConfig: NextAuthConfig = {
   providers: [], // Required by NextAuthConfig type
   callbacks: {
-    authorized({ request, auth }) {
+    async authorized({ request, auth }) {
       // Array of regex patterns of paths we want to protect
       const protectedPaths = [
         /\/shipping-address/,
@@ -18,27 +17,12 @@ export const authConfig: NextAuthConfig = {
 
       // Get pathname from the req URL object
       const { pathname } = request.nextUrl;
-      const token = request.cookies.get('authjs.csrf-token')?.value;
+      const token = request.cookies.get('next-auth.session-token')?.value;
+      // const tokenit = await getToken({ req: request, secret: process.env.JWT_SECRET }); // Pass the request object and the secret
       // Check if user is not authenticated and accessing a protected path
       if (!token && protectedPaths.some((p) => p.test(pathname))) return false;
 
-      // Check for session cart cookie
-      if (!request.cookies.get('sessionCartId')) {
-        // Generate new session cart id cookie
-        const sessionCartId = crypto.randomUUID();
-
-        // Create new response and add the new headers
-        const response = NextResponse.next({
-          request: {
-            headers: new Headers(request.headers),
-          },
-        });
-
-        // Set newly generated sessionCartId in the response cookies
-        response.cookies.set('sessionCartId', sessionCartId);
-
-        return response;
-      }
+      // const { userId, role } = verifyJWT(token) as JwtPayload;
 
       return true;
     },

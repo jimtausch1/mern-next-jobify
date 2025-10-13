@@ -1,19 +1,27 @@
-import Wrapper from '../../assets/wrappers/Dashboard';
+import { QueryClient } from '@tanstack/react-query';
+import styles from '../../assets/css/Dashboard.module.css';
+import DashboardProvider from '../../context/DashboardProvider';
 import BigSidebar from './BigSidebar';
 import Navbar from './Navbar';
 import SmallSidebar from './SmallSidebar';
 
-export default function DashboardPage() {
+type DashboardPageProps = {
+  queryClient: QueryClient;
+};
+
+export default function DashboardPage({ queryClient }: DashboardPageProps) {
   return (
-    <Wrapper>
-      <main className="dashboard">
-        <SmallSidebar />
-        <BigSidebar />
-        <div>
-          <Navbar />
-          <div className="dashboard-page"></div>
-        </div>
-      </main>
-    </Wrapper>
+    <DashboardProvider queryClient={queryClient}>
+      <section className={styles.section}>
+        <main className={styles.dashboard}>
+          <SmallSidebar />
+          <BigSidebar />
+          <div>
+            <Navbar />
+            <div className={styles['dashboard-page']}></div>
+          </div>
+        </main>
+      </section>
+    </DashboardProvider>
   );
 }

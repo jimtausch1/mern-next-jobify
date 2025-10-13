@@ -1,8 +1,4 @@
-'use client';
-
-import styled from 'styled-components';
-
-const Wrapper = styled.nav`
+.navbar {
   height: var(--nav-height);
   display: flex;
   align-items: center;
@@ -49,5 +45,4 @@ const Wrapper = styled.nav`
       display: block;
     }
   }
-`;
-export default Wrapper;
+}

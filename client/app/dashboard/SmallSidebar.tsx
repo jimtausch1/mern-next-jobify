@@ -1,21 +1,25 @@
 'use client';
 
 import { FaTimes } from 'react-icons/fa';
-import Wrapper from '../../assets/wrappers/SmallSidebar';
+import styles from '../../assets/css/SmallSidebar.module.css';
 import Logo from '../../components/Logo';
 import { useDashboardContext } from '../../context/DashboardContext';
 import NavLinks from './NavLinks';
 
-export default function SmallSidebar(params) {
+export default function SmallSidebar() {
   const { showSidebar, toggleSidebar } = useDashboardContext();
 
+  const displaySidebar = showSidebar
+    ? `${styles['sidebar-container']} ${styles['show-sidebar']}`
+    : `${styles['sidebar-container']}`;
+
   return (
-    <Wrapper>
-      <div className={showSidebar ? 'sidebar-container show-sidebar' : 'sidebar-container'}>
-        <div className="content">
+    <aside className={styles['small-sidebar']}>
+      <div className={displaySidebar}>
+        <div className={styles.content}>
           <button
             type="button"
-            className="close-btn"
+            className={styles['close-btn']}
             data-testid="toggle-sidebar"
             onClick={toggleSidebar}
           >
@@ -27,6 +31,6 @@ export default function SmallSidebar(params) {
           <NavLinks />
         </div>
       </div>
-    </Wrapper>
+    </aside>
   );
 }

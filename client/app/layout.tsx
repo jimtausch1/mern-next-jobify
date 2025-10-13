@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import ToastProvider from '../components/ToastProvider';
+import { ReactQueryClientProvider } from '../context/ReactQueryClientProvider';
 import './globals.css';
 import StyledComponentsRegistry from './registry';
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ToastProvider>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-        </ToastProvider>
+        <ReactQueryClientProvider>
+          <ToastProvider>
+            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          </ToastProvider>
+        </ReactQueryClientProvider>
       </body>
     </html>
   );
