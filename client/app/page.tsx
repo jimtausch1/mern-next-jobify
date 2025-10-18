@@ -1,8 +1,8 @@
+import styles from '@/assets/css/LandingPage.module.css';
+import main from '@/assets/main.svg';
+import Logo from '@/components/Logo';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from '../assets/css/LandingPage.module.css';
-import main from '../assets/main.svg';
-import Logo from '../components/Logo';
 
 export default function Home() {
   return (

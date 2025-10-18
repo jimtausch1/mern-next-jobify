@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
-import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
-import ToastProvider from '../components/ToastProvider';
-import { ReactQueryClientProvider } from '../context/ReactQueryClientProvider';
 import './globals.css';
-import StyledComponentsRegistry from './registry';
+import Providers from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,13 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <SessionProvider>
-          <ReactQueryClientProvider>
-            <ToastProvider>
-              <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-            </ToastProvider>
-          </ReactQueryClientProvider>
-        </SessionProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

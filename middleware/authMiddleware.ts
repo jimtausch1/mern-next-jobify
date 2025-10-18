@@ -4,7 +4,8 @@ import { verifyJWT } from '../utils/tokenUtils.js';
 import { BadRequestError, UnauthenticatedError, UnauthorizedError } from './customErrors.js';
 
 export const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
-  const { token } = req.cookies;
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.substring(7); // "Bearer ".length is 7
   if (!token) throw new UnauthenticatedError('authentication invalid');
 
   try {

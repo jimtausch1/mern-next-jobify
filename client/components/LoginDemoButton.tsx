@@ -1,24 +1,27 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { customFetch } from '../utils/customFetch';
-
-const loginDemoUser = async () => {
-  const data = {
-    email: 'test1@test.com',
-    password: 'secret123',
-  };
-  try {
-    await customFetch.post('/auth/login', data);
-    toast.success('Take a test drive');
-    redirect('/dashboard');
-  } catch {
-    // toast.error(error?.response?.data?.msg);
-  }
-};
 
 export default function LoginDemoButton() {
+  const router = useRouter();
+
+  const loginDemoUser = async () => {
+    try {
+      await signIn('credentials', {
+        email: 'test1@test.com',
+        password: 'secret123',
+        redirect: false,
+      });
+
+      toast.success('Take a test drive');
+      router.push('/dashboard');
+    } catch (err: unknown) {
+      toast.error('Invalid credentials');
+    }
+  };
+
   return (
     <button type="button" className="btn btn-block" onClick={loginDemoUser}>
       explore the app

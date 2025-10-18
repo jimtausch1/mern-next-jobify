@@ -1,17 +1,12 @@
-import { QueryClient } from '@tanstack/react-query';
 import styles from '../../assets/css/Dashboard.module.css';
 import DashboardProvider from '../../context/DashboardProvider';
 import BigSidebar from './BigSidebar';
 import Navbar from './Navbar';
 import SmallSidebar from './SmallSidebar';
 
-type DashboardPageProps = {
-  queryClient: QueryClient;
-};
-
-export default function DashboardPage({ queryClient }: DashboardPageProps) {
+export default function DashboardPage() {
   return (
-    <DashboardProvider queryClient={queryClient}>
+    <DashboardProvider>
       <section className={styles.section}>
         <main className={styles.dashboard}>
           <SmallSidebar />

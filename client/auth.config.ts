@@ -60,22 +60,39 @@ export const authConfig: NextAuthConfig = {
 
       return true;
     },
+    async session({ session, user, trigger, token }) {
+      if (session.user) {
+        // Set the user ID from the token
+        session.user.id = token.sub;
+        session.user.role = token.role;
+        session.user.name = token.name;
+
+        // If there is an update, set the user name
+        if (trigger === 'update') {
+          session.user.name = user.name;
+        }
+      }
+
+      if (session.user && token) {
+        // session.user.token = token.jwt;
+        session.user.id = token.id as string;
+      }
+
+      return session;
+    },
     async jwt({ token, user, trigger, session }) {
       // Assign user fields to token
       if (user) {
-        const { userId, role } = verifyJWT((user as any).token) as JwtPayload;
+        const { userId, name, email, role } = verifyJWT((user as any).token) as JwtPayload;
         token.id = userId;
+        token.name = name;
+        token.email = email;
         token.role = role ?? '';
+        token.jwt = (user as any).token;
 
         // If user has no name then use the email
         if (user.name === 'NO_NAME') {
           token.name = user.email!.split('@')[0];
-
-          // Update database to reflect the token name
-          // await prisma.user.update({
-          //   where: { id: user.id },
-          //   data: { name: token.name },
-          // });
         }
 
         if (trigger === 'signIn' || trigger === 'signUp') {
@@ -84,11 +101,6 @@ export const authConfig: NextAuthConfig = {
           if (sessionCartId) {
           }
         }
-      }
-
-      // Handle session updates
-      if (session?.user.name && trigger === 'update') {
-        token.name = session.user.name;
       }
 
       return token;

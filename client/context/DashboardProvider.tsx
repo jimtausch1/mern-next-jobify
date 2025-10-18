@@ -1,25 +1,32 @@
 'use client';
 
-import { type QueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { queryClient } from '../utils';
 import { checkDefaultTheme } from '../utils/checkTheme';
 import { customFetch } from '../utils/customFetch';
 import { DashboardContext } from './DashboardContext';
 
 type DashboardProviderProps = {
   children: React.ReactNode | string;
-  queryClient: QueryClient;
 };
 
-export default function DashboardProvider({ children, queryClient }: DashboardProviderProps) {
+const userQuery = {
+  queryKey: ['user'],
+  queryFn: async () => {
+    const { data } = await customFetch.get('/users/current-user');
+    return data;
+  },
+};
+
+export default function DashboardProvider({ children }: DashboardProviderProps) {
   const [isAuthError, setIsAuthError] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme());
-  // const { user } = useQuery(userQuery).data;
-  const user = {} as UserModel;
+  const user = useQuery(userQuery).data;
   const router = useRouter();
 
   const toggleDarkTheme = () => {
@@ -37,7 +44,7 @@ export default function DashboardProvider({ children, queryClient }: DashboardPr
   const logoutUser = useCallback(async () => {
     await signOut();
     router.push('/');
-    // queryClient.invalidateQueries();
+    queryClient.invalidateQueries();
     toast.success('Logging out...');
   }, [router, queryClient]);
 

@@ -20,7 +20,7 @@ export default function LogoutContainer(params) {
         className={`btn ${styles['logout-btn']}`}
         onClick={() => setShowLogout(!showLogout)}
       >
-        {user.avatar ? (
+        {user?.avatar ? (
           <img src={user.avatar} alt="avatar" className={styles.img} />
         ) : (
           <FaUserCircle />

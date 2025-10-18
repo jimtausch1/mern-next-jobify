@@ -18,8 +18,7 @@ export default function NavLinks({ isBigSidebar }: NavLinksProps) {
     <div className={navlinksStyles}>
       {links.map((link) => {
         const { text, path, icon } = link;
-        const { role } = user;
-        if (path === 'admin' && role !== 'admin') return;
+        if (path === 'admin' && user?.role !== 'admin') return;
         return (
           <NavLink
             href={path}
