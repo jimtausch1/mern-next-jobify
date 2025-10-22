@@ -45,11 +45,13 @@ export const authConfig: NextAuthConfig = {
       const protectedPaths = [
         /\/shipping-address/,
         /\/payment-method/,
-        /\/dashboard/,
+        /\/all-jobs/,
         /\/profile/,
         /\/user\/(.*)/,
         /\/order\/(.*)/,
         /\/admin/,
+        /\/api\/ext\/jobs/,
+        /\/api\/ext\/users/,
       ];
 
       // Get pathname from the req URL object

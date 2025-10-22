@@ -22,7 +22,7 @@ export default function LoginForm() {
 
     if (response.ok) {
       toast.success('Login successful');
-      router.push('/dashboard');
+      router.push('/all-jobs');
     } else {
       toast.error('Invalid credentials');
     }

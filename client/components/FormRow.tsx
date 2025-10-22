@@ -29,7 +29,7 @@ export default function FormRow({ type, name, labelText, defaultValue, onChange 
         className="form-input"
         defaultValue={defaultValue || ''}
         onChange={onChange}
-        required
+        // required
       />
     </div>
   );

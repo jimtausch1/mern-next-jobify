@@ -4,7 +4,7 @@ import BigSidebar from './BigSidebar';
 import Navbar from './Navbar';
 import SmallSidebar from './SmallSidebar';
 
-export default function DashboardPage() {
+export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <DashboardProvider>
       <section className={styles.section}>
@@ -13,7 +13,7 @@ export default function DashboardPage() {
           <BigSidebar />
           <div>
             <Navbar />
-            <div className={styles['dashboard-page']}></div>
+            <div className={styles['dashboard-page']}>{children}</div>
           </div>
         </main>
       </section>

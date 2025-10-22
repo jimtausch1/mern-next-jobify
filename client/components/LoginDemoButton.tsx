@@ -16,7 +16,7 @@ export default function LoginDemoButton() {
       });
 
       toast.success('Take a test drive');
-      router.push('/dashboard');
+      router.push('/all-jobs');
     } catch (err: unknown) {
       toast.error('Invalid credentials');
     }

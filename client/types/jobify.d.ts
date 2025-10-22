@@ -31,7 +31,7 @@ type SearchParams = {
   jobStatus: string;
   jobType: string;
   sort: string;
-  page: number;
+  page?: string;
 };
 
 type UserModel = {

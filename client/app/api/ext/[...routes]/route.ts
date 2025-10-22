@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const baseServiceUrl = 'http://localhost:5000/api/v1/';
 
-async function getApiUrl(params: Promise<{ routes: string | string[] }>) {
-  const { routes } = await params;
+async function getApiUrl(routes: string | string[]) {
   const serviceUrl = Array.isArray(routes) ? routes.join('/') : routes[0];
 
   const url = `${baseServiceUrl}${serviceUrl}`;
@@ -18,6 +17,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ routes: string | string[] }> }
 ) {
+  const { routes } = await params;
+  const searchParams = request.nextUrl.searchParams;
   const session = await auth(); // Get the current session
   const sessionToken = request.cookies.get('authjs.session-token')?.value;
   const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
@@ -27,11 +28,12 @@ export async function GET(
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const externalApiUrl = await getApiUrl(params);
+  const externalApiUrl = await getApiUrl(routes);
 
   const apiInstance = axios.create({
     baseURL: externalApiUrl, // Optional: Set a base URL
     timeout: 5000, // Optional: Set a request timeout
+    params: searchParams,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${decodedToken.jwt}`, // Example: Authorization header
@@ -62,7 +64,7 @@ export async function POST(
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const externalApiUrl = await getApiUrl(params);
+  const externalApiUrl = await getApiUrl(routes);
 
   const headers: RawAxiosRequestHeaders = {
     'Content-Type': 'application/json',

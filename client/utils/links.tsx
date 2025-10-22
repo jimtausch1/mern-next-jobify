@@ -6,7 +6,7 @@ import { MdAdminPanelSettings, MdQueryStats } from 'react-icons/md';
 export const links = [
   {
     text: 'all jobs',
-    path: '.',
+    path: '/all-jobs',
     icon: <MdQueryStats />,
   },
   {

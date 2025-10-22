@@ -12,6 +12,7 @@ export default function NavLinks({ isBigSidebar }: NavLinksProps) {
   const { toggleSidebar, user } = useDashboardContext();
   const navlinksStyles = isBigSidebar ? bigStyles['nav-links'] : smallStyles['nav-links'];
   const navlinkStyles = isBigSidebar ? bigStyles['nav-link'] : smallStyles['nav-link'];
+  const activeStyles = isBigSidebar ? bigStyles.active : smallStyles.active;
   const iconStyles = isBigSidebar ? bigStyles.icon : smallStyles.icon;
 
   return (
@@ -25,7 +26,7 @@ export default function NavLinks({ isBigSidebar }: NavLinksProps) {
             key={text}
             exact
             className={navlinkStyles}
-            activeClassName={navlinkStyles}
+            activeClassName={`${navlinkStyles} ${activeStyles}`}
             onClick={isBigSidebar ? () => {} : toggleSidebar}
             end
           >
