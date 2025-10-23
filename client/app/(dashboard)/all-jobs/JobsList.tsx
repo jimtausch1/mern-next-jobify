@@ -5,7 +5,7 @@ import { useAllJobsContext } from '@/context/AllJobsContext';
 import styles from '../../../assets/css/JobsList.module.css';
 import Job from './Job';
 
-export default function JobsList(params) {
+export default function JobsList() {
   const { data } = useAllJobsContext();
 
   const { jobs, totalJobs, numOfPages } = data;
@@ -22,7 +22,7 @@ export default function JobsList(params) {
       <h5>
         {totalJobs} job{jobs && jobs.length > 1 && 's'} found
       </h5>
-      <div className="jobs">
+      <div className={styles.jobs}>
         {jobs &&
           jobs.map((job: JobModel) => {
             return <Job key={job._id} {...job} />;

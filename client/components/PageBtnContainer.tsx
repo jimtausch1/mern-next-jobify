@@ -1,5 +1,6 @@
 'use client';
 
+import { getQueryClient } from '@/app/providers';
 import { useAllJobsContext } from '@/context/AllJobsContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
@@ -24,16 +25,19 @@ export default function PageBtnContainer() {
   const router = useRouter();
 
   const handlePageChange = (pageNumber: string) => {
-    // const searchParams = new URLSearchParams(search);
+    const urlSearchParams = new URLSearchParams(searchParams);
+    urlSearchParams.set('page', pageNumber);
 
-    searchParams.page = pageNumber;
-    router.push(`${pathname}?${searchParams.toString()}`);
+    const queryClient = getQueryClient();
+    queryClient.invalidateQueries({ queryKey: ['jobs'] });
+
+    router.push(`${pathname}?${urlSearchParams.toString()}`);
   };
 
   const addPageButton = ({ pageNumber, activeClass }: AddPageButtonProps) => {
     return (
       <button
-        className={`btn page-btn ${activeClass && 'active'}`}
+        className={`btn ${styles['page-btn']} ${activeClass && styles.active}`}
         key={pageNumber}
         onClick={() => handlePageChange(pageNumber.toString())}
       >
@@ -49,7 +53,7 @@ export default function PageBtnContainer() {
     // dots
     if (currentPage > 3) {
       pageButtons.push(
-        <span className="page-btn dots" key="dots-1">
+        <span className={`${styles['page-btn']} ${styles.dots}}`} key="dots-1">
           ...
         </span>
       );
@@ -87,7 +91,7 @@ export default function PageBtnContainer() {
 
     if (currentPage < numOfPages - 2) {
       pageButtons.push(
-        <span className="page-btn dots" key="dots+1">
+        <span className={`${styles['page-btn']} ${styles.dots}}`} key="dots+1">
           ...
         </span>
       );
@@ -105,7 +109,7 @@ export default function PageBtnContainer() {
   return (
     <section className={styles.section}>
       <button
-        className="btn prev-btn"
+        className={`btn ${styles['prev-btn']}`}
         onClick={() => {
           let prevPage = currentPage - 1;
           if (prevPage < 1) prevPage = numOfPages;
@@ -115,9 +119,9 @@ export default function PageBtnContainer() {
         <HiChevronDoubleLeft />
         prev
       </button>
-      <div className="btn-container">{renderPageButtons()}</div>
+      <div className={styles['btn-container']}>{renderPageButtons()}</div>
       <button
-        className="btn next-btn"
+        className={`btn ${styles['next-btn']}`}
         onClick={() => {
           let nextPage = currentPage + 1;
           if (nextPage > numOfPages) nextPage = 1;
