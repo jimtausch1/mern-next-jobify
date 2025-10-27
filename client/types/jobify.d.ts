@@ -20,6 +20,14 @@ type JobModel = {
   createdBy: object;
 };
 
+type CreateEditJobType = {
+  company: string;
+  position: string;
+  jobStatus: JOB_STATUS;
+  jobType: JOB_TYPE;
+  jobLocation: string;
+};
+
 type DefaultStats = {
   pending: number;
   interview: number;
@@ -42,4 +50,11 @@ type UserModel = {
   location: string;
   role?: string;
   avatar?: string;
+};
+
+type AllJobsResponse = {
+  jobs: JobModel[];
+  totalJobs: number;
+  currentPage: number;
+  numOfPages: number;
 };

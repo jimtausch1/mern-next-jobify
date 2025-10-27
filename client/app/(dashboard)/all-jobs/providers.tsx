@@ -1,47 +1,44 @@
 'use client';
 
-import { AllJobsProvider } from '@/context/AllJobsProvider';
+import { AllJobsContext } from '@/context/AllJobsContext';
 import { customFetch } from '@/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 
-type AllJobsProviderProps = {
-  children: React.ReactNode | string;
-};
-
-export default function Providers({ children }: AllJobsProviderProps) {
-  const queryClient = useQueryClient();
-  const [data, setData] = useState({});
+export default function Providers({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
+  const search = searchParams.get('search');
+  const jobStatus = searchParams.get('jobStatus');
+  const jobType = searchParams.get('jobType');
+  const sort = searchParams.get('sort');
+  const page = searchParams.get('page');
   const params = {
-    search: searchParams.get('search') ?? '',
-    jobStatus: searchParams.get('jobStatus') ?? 'all',
-    jobType: searchParams.get('jobType') ?? 'all',
-    sort: searchParams.get('sort') ?? 'newest',
-    page: searchParams.get('page') ?? '1',
+    search,
+    jobStatus,
+    jobType,
+    sort,
+    page,
   };
-
-  const { search, jobStatus, jobType, sort, page } = params;
 
   const userQuery = {
     queryKey: ['jobs', search, jobStatus, jobType, sort, page],
     queryFn: async () => {
       const { data } = await customFetch.get('/jobs', {
-        params,
+        params: params,
       });
 
-      setData(data);
-      console.log('client side request');
       return data;
     },
   };
 
-  useQuery(userQuery);
+  const { data, isLoading } = useQuery(userQuery);
+
+  const response = data ?? ({} as AllJobsResponse);
 
   return (
-    <AllJobsProvider data={data} searchParams={params}>
+    <AllJobsContext.Provider value={{ searchParams: params, data: response, isLoading }}>
       {children}
-    </AllJobsProvider>
+    </AllJobsContext.Provider>
   );
 }

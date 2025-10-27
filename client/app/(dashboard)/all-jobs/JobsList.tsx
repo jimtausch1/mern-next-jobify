@@ -6,13 +6,21 @@ import styles from '../../../assets/css/JobsList.module.css';
 import Job from './Job';
 
 export default function JobsList() {
-  const { data } = useAllJobsContext();
+  const { data, isLoading } = useAllJobsContext();
+
+  if (isLoading) {
+    return (
+      <section className={styles.section}>
+        <h5>Loading...</h5>
+      </section>
+    );
+  }
 
   const { jobs, totalJobs, numOfPages } = data;
   if (jobs && jobs.length === 0) {
     return (
       <section className={styles.section}>
-        <h2>No jobs to display...</h2>
+        <h5>No jobs to display...</h5>
       </section>
     );
   }

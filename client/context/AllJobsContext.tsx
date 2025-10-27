@@ -5,6 +5,7 @@ import { createContext, useContext } from 'react';
 
 type AllJobsContextValues = {
   searchParams: SearchParams;
+  isLoading: boolean;
   data: any;
 };
 
@@ -16,6 +17,7 @@ export const AllJobsContext = createContext<AllJobsContextValues>({
     sort: 'newest',
     page: '1',
   },
+  isLoading: false,
   data: [],
 });
 

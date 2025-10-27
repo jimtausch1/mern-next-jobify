@@ -1,8 +1,10 @@
 'use client';
 
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent } from 'react';
+import { RefCallBack } from 'react-hook-form';
 
 type FormRowSelectProps = {
+  ref: RefCallBack;
   name: string;
   labelText?: string;
   list: string[];
@@ -11,17 +13,14 @@ type FormRowSelectProps = {
 };
 
 export default function FormRowSelect({
+  ref,
   name,
   labelText,
   list,
   defaultValue = '',
   onChange,
+  ...props
 }: FormRowSelectProps) {
-  const selectRef = useRef<HTMLSelectElement>(null);
-  if (selectRef && selectRef.current) {
-    selectRef.current.value = defaultValue;
-  }
-
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
@@ -30,10 +29,11 @@ export default function FormRowSelect({
       <select
         name={name}
         id={name}
-        ref={selectRef}
+        ref={ref}
         className="form-select"
         defaultValue={defaultValue}
         onChange={onChange}
+        {...props}
       >
         {list.map((itemValue) => {
           return (

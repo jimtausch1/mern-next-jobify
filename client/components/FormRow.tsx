@@ -1,23 +1,30 @@
 'use client';
 
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent } from 'react';
+import { FieldError, RefCallBack } from 'react-hook-form';
 
 type FormRowProps = {
+  ref: RefCallBack;
   type: string;
   name: string;
   labelText?: string;
   defaultValue?: string;
+  error: FieldError;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function FormRow({ type, name, labelText, defaultValue, onChange }: FormRowProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  if (inputRef && inputRef.current) {
-    inputRef.current.value = defaultValue ?? '';
-  }
-
+export default function FormRow({
+  ref,
+  type,
+  name,
+  labelText,
+  defaultValue,
+  error,
+  onChange,
+  ...props
+}: FormRowProps) {
   return (
-    <div className="form-row">
+    <div className={!error ? 'form-row' : ''}>
       <label htmlFor={name} className="form-label">
         {labelText || name}
       </label>
@@ -25,12 +32,15 @@ export default function FormRow({ type, name, labelText, defaultValue, onChange 
         type={type}
         id={name}
         name={name}
-        ref={inputRef}
+        ref={ref}
         className="form-input"
         defaultValue={defaultValue || ''}
         onChange={onChange}
+        {...props}
+
         // required
       />
+      {error && <span style={{ color: 'red', fontSize: '0.8em' }}>{error.message}</span>}
     </div>
   );
 }

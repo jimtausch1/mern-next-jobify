@@ -11,22 +11,22 @@ export const links = [
   },
   {
     text: 'add job',
-    path: 'add-job',
+    path: '/add-job',
     icon: <FaWpforms />,
   },
   {
     text: 'stats',
-    path: 'stats',
+    path: '/stats',
     icon: <IoBarChartSharp />,
   },
   {
     text: 'profile',
-    path: 'profile',
+    path: '/profile',
     icon: <ImProfile />,
   },
   {
     text: 'admin',
-    path: 'admin',
+    path: '/admin',
     icon: <MdAdminPanelSettings />,
   },
 ];

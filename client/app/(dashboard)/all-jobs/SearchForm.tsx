@@ -1,6 +1,5 @@
 'use client';
 
-import { getQueryClient } from '@/app/providers';
 import styles from '@/assets/css/DashboardForm.module.css';
 import FormRow from '@/components/FormRow';
 import FormRowSelect from '@/components/FormRowSelect';
@@ -20,11 +19,8 @@ export default function SearchForm() {
   const sort = searchParams.get('sort') || 'newest';
 
   const reset = () => {
-    const queryClient = getQueryClient();
-    queryClient.invalidateQueries({ queryKey: ['jobs'] });
-    const params = new URLSearchParams();
-
     if (formRef.current) {
+      const params = new URLSearchParams();
       params.set('search', '');
       params.set('jobStatus', 'all');
       params.set('jobType', 'all');
@@ -35,10 +31,6 @@ export default function SearchForm() {
   };
 
   const submit = () => {
-    const queryClient = getQueryClient();
-    queryClient.invalidateQueries({ queryKey: ['jobs'] });
-    const params = new URLSearchParams();
-
     if (formRef.current) {
       const formData = new FormData(formRef.current);
       const search = formData.get('search') as string;
@@ -46,6 +38,7 @@ export default function SearchForm() {
       const jobType = formData.get('jobType') as string;
       const sort = formData.get('sort') as string;
 
+      const params = new URLSearchParams();
       params.set('search', search);
       params.set('jobStatus', jobStatus);
       params.set('jobType', jobType);

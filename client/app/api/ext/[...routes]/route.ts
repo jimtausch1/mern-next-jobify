@@ -88,7 +88,7 @@ export async function POST(
     const { data } = await apiInstance.post(externalApiUrl, reqBody);
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error fetching external data:', error);
-    return NextResponse.json({ message: 'Error fetching data' }, { status: 500 });
+    console.error('Error posting external data:', error);
+    return NextResponse.json({ message: 'Error posting data' }, { status: 500 });
   }
 }

@@ -99,7 +99,6 @@ h5 {
   margin: 0;
   font-weight: 400;
   line-height: 1;
-  text-transform: capitalize;
   letter-spacing: var(--letter-spacing);
 }
 
