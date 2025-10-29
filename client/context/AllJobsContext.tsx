@@ -6,7 +6,7 @@ import { createContext, useContext } from 'react';
 type AllJobsContextValues = {
   searchParams: SearchParams;
   isLoading: boolean;
-  data: any;
+  data: AllJobsResponse;
 };
 
 export const AllJobsContext = createContext<AllJobsContextValues>({
@@ -18,7 +18,7 @@ export const AllJobsContext = createContext<AllJobsContextValues>({
     page: '1',
   },
   isLoading: false,
-  data: [],
+  data: {} as AllJobsResponse,
 });
 
 export const useAllJobsContext = () => useContext(AllJobsContext);

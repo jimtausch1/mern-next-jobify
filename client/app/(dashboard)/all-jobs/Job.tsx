@@ -2,6 +2,7 @@ import styles from '@/assets/css/Job.module.css';
 import day from 'dayjs';
 import Link from 'next/link';
 import { FaBriefcase, FaCalendarAlt, FaLocationArrow } from 'react-icons/fa';
+import JobDeleteButton from './JobDeleteButton';
 import JobInfo from './JobInfo';
 
 type JobProps = {
@@ -41,14 +42,10 @@ export default function Job({
           <div className={`${styles.status} ${jobStatus}`}>{jobStatus}</div>
         </div>
         <footer className={styles.actions}>
-          <Link href={`../edit-job/${_id}`} className={`btn ${styles['edit-btn']}`}>
+          <Link href={`/all-jobs/${_id}`} className={`btn ${styles['edit-btn']}`}>
             Edit
           </Link>
-          <form method="post" action={`../delete-job/${_id}`}>
-            <button type="submit" className={`btn ${styles['delete-btn']}`}>
-              Delete
-            </button>
-          </form>
+          <JobDeleteButton id={_id} />
         </footer>
       </div>
     </article>

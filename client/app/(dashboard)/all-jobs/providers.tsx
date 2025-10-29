@@ -8,10 +8,10 @@ import React from 'react';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
-  const search = searchParams.get('search');
-  const jobStatus = searchParams.get('jobStatus');
-  const jobType = searchParams.get('jobType');
-  const sort = searchParams.get('sort');
+  const search = searchParams.get('search') ?? '';
+  const jobStatus = searchParams.get('jobStatus') ?? 'all';
+  const jobType = searchParams.get('jobType') ?? 'all';
+  const sort = searchParams.get('sort') ?? 'newest';
   const page = searchParams.get('page');
   const params = {
     search,

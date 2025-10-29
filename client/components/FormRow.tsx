@@ -9,7 +9,7 @@ type FormRowProps = {
   name: string;
   labelText?: string;
   defaultValue?: string;
-  error: FieldError;
+  error?: FieldError;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -37,8 +37,6 @@ export default function FormRow({
         defaultValue={defaultValue || ''}
         onChange={onChange}
         {...props}
-
-        // required
       />
       {error && <span style={{ color: 'red', fontSize: '0.8em' }}>{error.message}</span>}
     </div>

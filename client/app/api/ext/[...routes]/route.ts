@@ -92,3 +92,90 @@ export async function POST(
     return NextResponse.json({ message: 'Error posting data' }, { status: 500 });
   }
 }
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ routes: string | string[] }> }
+) {
+  const { routes } = await params;
+  const loginRequest = routes.includes('login');
+  const session = await auth(); // Get the current session
+  const sessionToken = request.cookies.get('authjs.session-token')?.value;
+  const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
+
+  if ((!session || !sessionToken || !NEXTAUTH_SECRET) && !loginRequest) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  const externalApiUrl = await getApiUrl(routes);
+
+  const headers: RawAxiosRequestHeaders = {
+    'Content-Type': 'application/json',
+  };
+
+  const decodedToken = await getToken({ req: request, secret: NEXTAUTH_SECRET });
+  const reqBody = await request.json();
+
+  if (!loginRequest && decodedToken) {
+    headers.Authorization = `Bearer ${decodedToken.jwt}`;
+    headers['X-Custom-Header'] = session.user.id;
+  }
+
+  const apiInstance = axios.create({
+    baseURL: externalApiUrl,
+    timeout: 5000,
+    headers: headers,
+  });
+
+  try {
+    const { data } = await apiInstance.patch(externalApiUrl, reqBody);
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Error patching external data:', error);
+    return NextResponse.json({ message: 'Error patching data' }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ routes: string | string[] }> }
+) {
+  const { routes } = await params;
+  const searchParams = request.nextUrl.searchParams;
+  const loginRequest = routes.includes('login');
+  const session = await auth(); // Get the current session
+  const sessionToken = request.cookies.get('authjs.session-token')?.value;
+  const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
+
+  if ((!session || !sessionToken || !NEXTAUTH_SECRET) && !loginRequest) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  const externalApiUrl = await getApiUrl(routes);
+
+  const headers: RawAxiosRequestHeaders = {
+    'Content-Type': 'application/json',
+  };
+
+  const decodedToken = await getToken({ req: request, secret: NEXTAUTH_SECRET });
+
+  if (!loginRequest && decodedToken) {
+    headers.Authorization = `Bearer ${decodedToken.jwt}`;
+    headers['X-Custom-Header'] = session.user.id;
+  }
+
+  const apiInstance = axios.create({
+    baseURL: externalApiUrl,
+    timeout: 5000,
+    params: searchParams,
+    headers: headers,
+  });
+
+  try {
+    const { data } = await apiInstance.delete(externalApiUrl);
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Error deleting external data:', error);
+    return NextResponse.json({ message: 'Error deleting data' }, { status: 500 });
+  }
+}
